@@ -1,0 +1,42 @@
+---
+- name: Configurar Servidores y Desplegar Encriptador
+  hosts: webservers
+  become: yes # Esto le dice a Ansible que ejecute todo como Administrador (root)
+  tasks:
+    - name: Actualizar la lista de paquetes (apt)
+      apt:
+        update_cache: yes
+
+    - name: Instalar Git y Docker
+      apt:
+        name:
+          - git
+          - docker.io
+        state: present
+
+    - name: Asegurar que el servicio de Docker este corriendo
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Limpiar directorio del proyecto si ya existe
+      file:
+        path: /home/ubuntu/proyecto_web
+        state: absent
+
+    - name: Clonar repositorio personal de GitHub
+      git:
+        repo: 'https://github.com/Malechria/mi-encriptador-app.git' # <--- CAMBIA ESTO
+        dest: /home/ubuntu/proyecto_web
+        clone: yes
+
+    - name: Construir la imagen de Docker usando el Dockerfile
+      command: docker build -t imagen-encriptador /home/ubuntu/proyecto_web
+
+    - name: Detener contenedor anterior si existe (Para evitar errores si lo corres 2 veces)
+      command: docker rm -f cont-encriptador
+      ignore_errors: yes
+
+    - name: Ejecutar el contenedor en el puerto 80
+      command: docker run -d -p 80:80 --name cont-encriptador imagen-encriptador
