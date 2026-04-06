@@ -1,7 +1,7 @@
 ---
 - name: Configurar Servidores y Desplegar Encriptador
   hosts: webservers
-  become: yes # Esto le dice a Ansible que ejecute todo como Administrador (root)
+  become: yes 
   tasks:
     - name: Actualizar la lista de paquetes (apt)
       apt:
@@ -27,7 +27,7 @@
 
     - name: Clonar repositorio personal de GitHub
       git:
-        repo: 'https://github.com/Malechria/mi-encriptador-app.git' # <--- CAMBIA ESTO
+        repo: 'https://github.com/Malechria/mi-encriptador-app.git' 
         dest: /home/ubuntu/proyecto_web
         clone: yes
 
