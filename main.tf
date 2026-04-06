@@ -49,7 +49,7 @@ resource "aws_instance" "mis_servidores" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   
-  key_name      = "llave-terraform" 
+  key_name      = "NOMBRE_LLAVE_DE_TERRAFORM" 
 
   vpc_security_group_ids = [aws_security_group.grupo_seguridad_web.id]
 
