@@ -1,3 +1,2 @@
 FROM nginx:latest
-
-COPY ./encriptadorTexto /usr/share/nginx/html/Encriptador
+COPY ./Encriptador-texto /usr/share/nginx/html/Encriptador
